@@ -67,22 +67,6 @@ print(f"Asset value:        ${asset_value:,.2f}")
 print(f"Contributions:      ${total_contributions:,.2f}")
 print(f"Gain vs contribution: ${gain_vs_contrib:,.2f}")
 
-# Optional: money-weighted return (XIRR) from dated cash flows
-# Positive = withdrawals (value when you sell), negative = deposits (your buys)
-# Here we simulate deposits of -$100 on buy dates and one terminal withdrawal = +asset_value
-try:
-    from numpy_financial import xirr  # pip install numpy-financial
-    cashflows = []
-    dates = []
-    for dt, val in contrib[contrib != 0].items():
-        cashflows.append(-val)
-        dates.append(dt)
-    cashflows.append(asset_value)
-    dates.append(price.index[-1])
-    irr = xirr(pd.Series(cashflows, index=pd.to_datetime(dates)))
-    print(f"\nApprox. money-weighted return (XIRR): {irr:.2%}")
-except Exception:
-    print("\n(Install numpy-financial if you want XIRR: `pip install numpy-financial`)")
+# --- Plot ---
 
-# --- Plot (quick look) ---
 pf.value().plot(title=f"{TICKER} DCA Portfolio Value"); plt.show()
